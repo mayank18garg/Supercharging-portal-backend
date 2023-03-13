@@ -29,11 +29,10 @@ const getissueTickets = asyncHandler(async (req, res) => {
     const userEmail = req.query.userEmail;
 
     const data = await issueTicketData.find({userEmail: userEmail});
-
-    if(!data || Object.keys(data).length === 0){
-        res.status(404);
-        throw new Error("No Tickets found");
-    }
+    // if(!data || Object.keys(data).length === 0){
+    //     res.status(404);
+    //     throw new Error("No Tickets found");
+    // }
     res.status(200).json(data);
 });
 
