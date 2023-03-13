@@ -88,10 +88,10 @@ const getKpiData = asyncHandler(async (req, res) => {
             ans.push({"hour": hourList[hour], "cummulative_kwhs": 0, "cummulative_sessions": 0});
         }
     }
-    if(!data || Object.keys(data).length === 0){
-        res.status(404);
-        throw new Error("KPI_data not found");
-    }
+    // if(!data || Object.keys(data).length === 0){
+    //     res.status(404);
+    //     throw new Error("KPI_data not found");
+    // }
     res.status(200).json(ans);
 });
 

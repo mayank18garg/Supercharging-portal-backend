@@ -106,10 +106,10 @@ const getSessionData = asyncHandler(async (req, res) => {
         current_date.setDate(current_date.getDate() + 7);
     }
 
-    if(!data || Object.keys(data).length === 0){
-        res.status(404);
-        throw new Error("Session_data not found");
-    }
+    // if(!data || Object.keys(data).length === 0){
+    //     res.status(404);
+    //     throw new Error("Session_data not found");
+    // }
     res.status(200).json(ans);
 });
 
