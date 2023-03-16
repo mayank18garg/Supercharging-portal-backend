@@ -15,6 +15,12 @@ const issueTicketSchema = mongoose.Schema({
     },
     type: {
         type: String
+    },
+    trt_id:{
+        type: Number
+    },
+    site_name:{
+        type: String
     }
 }, {collection: 'issue-ticket'});
 

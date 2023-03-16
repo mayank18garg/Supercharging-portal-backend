@@ -14,6 +14,7 @@ app.use(express.json());
 app.use("/api/kpiData", require("./routes/kpiRoutes"));
 app.use("/api/sessionData", require("./routes/sessionRoutes"));
 app.use("/api/issueTicket", require("./routes/issueTicketRoutes"));
+app.use("/api/userData", require("./routes/userDataRoutes"));
 app.use(errorHandler);
 
 app.use(function(req, res, next) {
@@ -24,4 +25,5 @@ app.use(function(req, res, next) {
 app.listen(port, () => {
     console.log(`server running on the port ${port}`);
 });
+
 

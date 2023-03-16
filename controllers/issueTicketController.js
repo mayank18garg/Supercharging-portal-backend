@@ -1,9 +1,24 @@
 const asyncHandler = require("express-async-handler");
 const issueTicketData = require("../models/issueTicketModel");
 
+
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    auth: {
+      user: 'mgargtesla@gmail.com',
+      pass: 'zhvarjagxeivyuxa',
+    }
+  });
+//   transporter.verify().then(console.log).catch(console.error);
+
 const createTicket = asyncHandler(async (req, res) => {
 
-    const {userEmail, title, type} = req.body;
+    const {userEmail, title, type, trt_id, site_name} = req.body;
+    console.log(req.body);
+    console.log(typeof req.body);
+    const emailText = JSON.stringify(req.body);
     // console.log(userEmail, title, type);
     if(!userEmail || !title || !type){
         res.status(400);
@@ -16,19 +31,35 @@ const createTicket = asyncHandler(async (req, res) => {
         status,
         title,
         timestamp: new Date(),
-        type
+        type,
+        trt_id,
+        site_name
     });
 
     res.status(201).json(data);
+
+    const message = {
+        from: "mgargtesla@gmail.com",
+        to: "mgarg20@asu.edu",
+        subject: `Issue Ticket from ${userEmail}`,
+        text: emailText
+    };
+    // const stringMessage = JSON.stringify(message);
+    // console.log(stringMessage);
+    transporter.verify().then(console.log).catch(console.error);
+    transporter.sendMail(message).then(info => {
+        console.log({info});
+      }).catch(console.error);
 
     
 });
 
 const getissueTickets = asyncHandler(async (req, res) => {
 
-    const userEmail = req.query.userEmail;
-
-    const data = await issueTicketData.find({userEmail: userEmail});
+    // const userEmail = req.query.userEmail;
+    const trt_id = parseInt(req.query.trt_id);
+    // console.log(typeof trt_id);
+    const data = await issueTicketData.find({trt_id: trt_id});
     // if(!data || Object.keys(data).length === 0){
     //     res.status(404);
     //     throw new Error("No Tickets found");
