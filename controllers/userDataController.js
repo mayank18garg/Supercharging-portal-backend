@@ -24,4 +24,26 @@ const getAllUserData = asyncHandler(async (req, res) => {
     res.status(200).json(finalData);
 });
 
-module.exports = getAllUserData;
+const getUserData = asyncHandler(async (req, res) => {
+    const userEmail = req.query.userEmail;
+    const usersData = await userData.find({userEmail: userEmail});
+    let finalData = [];
+    if(usersData){
+        usersData.map((data) => {
+            data.site.forEach(site => {
+                finalData.push(
+                    {
+                        siteName: site.siteName,
+                        siteAddress: site.siteAddress,
+                        trt_id: site.trt_id
+                    }
+                )
+            });
+        })
+    }
+
+
+    res.status(200).json(finalData);
+});
+
+module.exports = {getAllUserData, getUserData};
