@@ -46,4 +46,14 @@ const getUserData = asyncHandler(async (req, res) => {
     res.status(200).json(finalData);
 });
 
-module.exports = {getAllUserData, getUserData};
+const getContactInfo = asyncHandler(async (req, res) => {
+    const userEmail = req.query.userEmail;
+    const usersData = await userData.find({userEmail: userEmail}, {_id: 0, contact:1});
+    if(usersData.length > 0)
+        res.status(200).json(usersData[0]);
+    else
+        res.status(200).json({});
+
+});
+
+module.exports = {getAllUserData, getUserData, getContactInfo};
