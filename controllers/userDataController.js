@@ -56,4 +56,14 @@ const getContactInfo = asyncHandler(async (req, res) => {
 
 });
 
-module.exports = {getAllUserData, getUserData, getContactInfo};
+const updateContactInfo = asyncHandler(async (req, res) => {
+    const {userEmail, formValue} = req.body;
+    // console.log("Email:",userEmail, "Value:" ,formValue, typeof formValue);
+    const data = await userData.findOneAndUpdate({userEmail: userEmail}, {contact: formValue}, {projection:{contact:1},returnDocument: "after"});
+    console.log("Sanket",data);
+    res.status(200).json(data.contact);
+
+
+})
+
+module.exports = {getAllUserData, getUserData, getContactInfo, updateContactInfo};

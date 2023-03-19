@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 // const {getAllUserData, getUserData} = require("../controllers/userDataController");
-const {getContactInfo} = require("../controllers/userDataController");
+const {getContactInfo, updateContactInfo} = require("../controllers/userDataController");
 
 // router.route("/").get(getSessionDatas);
 
-router.route("/getContacts").get(getContactInfo); 
+router.route("/getContact").get(getContactInfo);
+router.route("/updateContact").put(updateContactInfo);
 // router.route("/").get(getUserData);
 module.exports = router;
