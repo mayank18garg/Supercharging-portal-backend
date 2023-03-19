@@ -12,7 +12,7 @@ const errorHandler = (err, req, res, next) => {
         case 500:
             res.json({title: "Server error", message: err.message, stackTrace: err.stackTrace});
         default:
-            res.json({title: "Query error", message: err.message, stackTrace: err.stackTrace});
+            res.json({title: "Query error", message: err.message, stackTrace: err.stackTrace, error: "true"});
             break;
     }
 };

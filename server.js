@@ -16,6 +16,7 @@ app.use("/api/sessionData", require("./routes/sessionRoutes"));
 app.use("/api/issueTicket", require("./routes/issueTicketRoutes"));
 app.use("/api/userData", require("./routes/userDataRoutes"));
 app.use("/api/contactInfo", require("./routes/contactInfoRoutes"));
+app.use("/api/siteInfo", require("./routes/siteInfoRoutes"));
 app.use(errorHandler);
 
 app.use(function(req, res, next) {
