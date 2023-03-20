@@ -2,15 +2,7 @@ const asyncHandler = require("express-async-handler");
 const issueTicketData = require("../models/issueTicketModel");
 
 
-const nodemailer = require('nodemailer');
-
-const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    auth: {
-      user: 'mgargtesla@gmail.com',
-      pass: 'zhvarjagxeivyuxa',
-    }
-  });
+const transporter = require("./emailServer");
 //   transporter.verify().then(console.log).catch(console.error);
 
 const createTicket = asyncHandler(async (req, res) => {

@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const userData = require("../models/userDataModel");
+const transporter = require("./emailServer");
 
 const getAllUserData = asyncHandler(async (req, res) => {
     const usersData = await userData.find();
@@ -63,14 +64,31 @@ const updateContactInfo = asyncHandler(async (req, res) => {
     console.log("Sanket",data);
     res.status(200).json(data.contact);
 
+    const emailText = JSON.stringify(req.body);
+
+    const message = {
+        from: "mgargtesla@gmail.com",
+        to: "mgarg20@asu.edu",
+        subject: `Update Contact Info -- ${userEmail}`,
+        text: emailText
+    };
+    // const stringMessage = JSON.stringify(message);
+    // console.log(stringMessage);
+    transporter.verify().then(console.log).catch(console.error);
+    transporter.sendMail(message).then(info => {
+        console.log({info});
+      }).catch(console.error);
+
+
 
 });
 
 const getSiteInfo = asyncHandler(async (req, res) => {
     const userEmail = req.query.userEmail;
     const trt_id = parseInt(req.query.trt_id);
+    console.log(userEmail, trt_id);
     const siteData = await userData.find({userEmail: userEmail}, {site: {$elemMatch: {trt_id:trt_id}}}, {_id: 0, site:1});
-
+    console.log("#################",siteData);
     if(siteData.length > 0 && siteData[0].site.length > 0)
         res.status(200).json(siteData[0].site[0]);
     else
@@ -96,6 +114,49 @@ const updateSiteInfo = asyncHandler(async (req, res) => {
     }
 
     res.status(200).json(data.site);
+
+    const emailText = JSON.stringify(formValue);
+    const message = {
+        from: "mgargtesla@gmail.com",
+        to: "mgarg20@asu.edu",
+        subject: `Update Site Info -- ${userEmail} ${trt_id}`,
+        text: emailText
+    };
+    // const stringMessage = JSON.stringify(message);
+    // console.log(stringMessage);
+    transporter.verify().then(console.log).catch(console.error);
+    transporter.sendMail(message).then(info => {
+        console.log({info});
+      }).catch(console.error);
 })
 
-module.exports = {getAllUserData, getUserData, getContactInfo, updateContactInfo, getSiteInfo, updateSiteInfo};
+const createUserData = asyncHandler(async (req, res) => {
+
+    const {userEmail, contact, trtlist} = req.body;
+
+    let sitearray = [];
+    for(let i=0; i<trtlist.trt_id.length; i++){
+        sitearray.push({
+            trt_id: parseInt(trtlist.trt_id[i]),
+            siteName: trtlist.siteName[i],
+            siteWebsite: trtlist.siteWebsite[i],
+            siteAddress: trtlist.siteAddress[i],
+            phone: trtlist.phone[i]
+        })
+    }
+    const dataSend = {
+        userEmail,
+        contact,
+        site: sitearray
+    }
+    // console.log(dataSend);
+    const data = await userData.updateOne({userEmail: req.body.userEmail}, {$setOnInsert: dataSend}, {upsert:true});
+
+    res.status(201).json(data);
+
+
+});
+
+
+
+module.exports = {getAllUserData, getUserData, getContactInfo, updateContactInfo, getSiteInfo, updateSiteInfo, createUserData};

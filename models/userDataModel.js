@@ -10,6 +10,6 @@ const userDataSchema = mongoose.Schema({
     site:{
         type: Array
     }
-}, {collection: 'supercharging_users'});
+}, {collection: 'supercharging_users', versionKey: false});
 
 module.exports = mongoose.model("userData", userDataSchema);
