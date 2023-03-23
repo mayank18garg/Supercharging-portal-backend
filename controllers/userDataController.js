@@ -47,48 +47,14 @@ const getUserData = asyncHandler(async (req, res) => {
     res.status(200).json(finalData);
 });
 
-const getContactInfo = asyncHandler(async (req, res) => {
-    const userEmail = req.query.userEmail;
-    const usersData = await userData.find({userEmail: userEmail}, {_id: 0, contact:1});
-    if(usersData.length > 0)
-        res.status(200).json(usersData[0]);
-    else
-        res.status(200).json({});
-
-});
-
-const updateContactInfo = asyncHandler(async (req, res) => {
-    const {userEmail, formValue} = req.body;
-    // console.log("Email:",userEmail, "Value:" ,formValue, typeof formValue);
-    const data = await userData.findOneAndUpdate({userEmail: userEmail}, {contact: formValue}, {projection:{contact:1},returnDocument: "after"});
-    console.log("Sanket",data);
-    res.status(200).json(data.contact);
-
-    const emailText = JSON.stringify(req.body);
-
-    const message = {
-        from: "mgargtesla@gmail.com",
-        to: "mgarg20@asu.edu",
-        subject: `Update Contact Info -- ${userEmail}`,
-        text: emailText
-    };
-    // const stringMessage = JSON.stringify(message);
-    // console.log(stringMessage);
-    transporter.verify().then(console.log).catch(console.error);
-    transporter.sendMail(message).then(info => {
-        console.log({info});
-      }).catch(console.error);
 
 
 
-});
 
 const getSiteInfo = asyncHandler(async (req, res) => {
     const userEmail = req.query.userEmail;
     const trt_id = parseInt(req.query.trt_id);
-    console.log(userEmail, trt_id);
     const siteData = await userData.find({userEmail: userEmail}, {site: {$elemMatch: {trt_id:trt_id}}}, {_id: 0, site:1});
-    console.log("#################",siteData);
     if(siteData.length > 0 && siteData[0].site.length > 0)
         res.status(200).json(siteData[0].site[0]);
     else
@@ -107,7 +73,6 @@ const updateSiteInfo = asyncHandler(async (req, res) => {
         }},
         {projection:{site:{$elemMatch: {trt_id: trt_id}}}, returnDocument: "after"}
     );
-    console.log(data);
     if(data==null){
         res.status(404);
         throw new Error("data not found");
@@ -159,4 +124,4 @@ const createUserData = asyncHandler(async (req, res) => {
 
 
 
-module.exports = {getAllUserData, getUserData, getContactInfo, updateContactInfo, getSiteInfo, updateSiteInfo, createUserData};
+module.exports = {getAllUserData, getUserData, getSiteInfo, updateSiteInfo, createUserData};

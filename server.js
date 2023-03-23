@@ -15,7 +15,8 @@ app.use("/api/kpiData", require("./routes/kpiRoutes"));
 app.use("/api/sessionData", require("./routes/sessionRoutes"));
 app.use("/api/issueTicket", require("./routes/issueTicketRoutes"));
 app.use("/api/userData", require("./routes/userDataRoutes"));
-app.use("/api/contactInfo", require("./routes/contactInfoRoutes"));
+app.use("/api/contactInfo", require("./routes/contactInformationRoutes"));
+// app.use("/api/contactInformation", require("./routes/contactInformationRoutes"));
 app.use("/api/siteInfo", require("./routes/siteInfoRoutes"));
 
 app.use(errorHandler);
